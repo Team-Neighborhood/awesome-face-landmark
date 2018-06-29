@@ -24,6 +24,7 @@ Test image size : 720x404
 - caffe: https://github.com/lsy17096535/face-landmark
 - caffe_5point: https://github.com/BobLiu20/FacialLandmark_Caffe
     - TCNN: Facial Landmark Detection with Tweaked Convolutional Neural Networks
+- caffe_cunjian: https://github.com/cunjian/face_alignment
 - dlib: http://dlib.net/face_landmark_detection.py.html
 - face-alignment: https://github.com/1adrianb/face-alignment
 
