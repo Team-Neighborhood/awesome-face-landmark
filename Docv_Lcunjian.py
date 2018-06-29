@@ -73,7 +73,8 @@ while True:
         margin = ((b-t) - (r-l))//2
         l = l - margin if (b-t-r+l)%2 == 0 else l - margin - 1
         r = r + margin
-        refined_box = [l-10, t-10, r+10, b+10]
+        ratio = (r-l)*0.1
+        refined_box = list(map(int, [l-ratio, t-ratio, r+ratio, b+ratio]))
         list_bboxes.append(refined_box)
         list_confidence.append(confidence)
 
@@ -86,12 +87,12 @@ while True:
         gray_roi = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
         res = cv2.resize(gray_roi, (LM_caffe_param, LM_caffe_param)).astype(np.float32)
         
-        m = np.zeros((LM_caffe_param,LM_caffe_param))
-        sd = np.zeros((LM_caffe_param,LM_caffe_param))
-        mean, std_dev = cv2.meanStdDev(res, m, sd)
-        normalized_roi = (res - mean[0][0]) / (0.000001 + std_dev[0][0])
+        for i, img in enumerate(res):
+            m = img.mean()
+            s = img.std()
+            res[i] = (img-m)/s
 
-        blob = cv2.dnn.blobFromImage(normalized_roi, 1.0,
+        blob = cv2.dnn.blobFromImage(res, 1.0,
         (LM_caffe_param, LM_caffe_param), None)
         landmarknet.setInput(blob)
         caffe_landmark = landmarknet.forward()
